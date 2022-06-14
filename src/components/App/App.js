@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import Board from '../Board/Board';
 import Score from '../Score/Score';
 import Popup from '../Popup/Popup';
+import WinLine from '../WinLine/WinLine';
 
 const App = () => {
 
@@ -16,8 +17,24 @@ const App = () => {
     firstPlayer: 0,
     secondPlayer: 0
   });
+  // const [winLine, setWinLine] = useState(null);
 
   const winner = calculateWinner(cells);
+
+  
+  const winCounter = useCallback(() => {
+    if (!xTurn) {
+      setScore(score => ({
+        ...score,
+        firstPlayer: score.firstPlayer + 1
+      }))
+    } else {
+      setScore(score => ({
+        ...score,
+        secondPlayer: score.secondPlayer + 1
+      }))
+    }
+  }, [xTurn]);
 
   useEffect(() => {
     function endGame() {
@@ -47,7 +64,7 @@ const App = () => {
 
     isDraw();
 
-  }, [cells, draw]);
+  }, [cells, draw, winCounter, winner]);
 
   const enterFirstPlayer = (e) => setFirstPlayer(e.target.value);
   const enterSecondPlayer = (e) => setSecondPlayer(e.target.value);
@@ -67,20 +84,6 @@ const App = () => {
     setShowPopup(false)
   }
 
-  const winCounter = () => {
-    if (!xTurn) {
-      setScore(score => ({
-        ...score,
-        firstPlayer: score.firstPlayer + 1
-      }))
-    } else {
-      setScore(score => ({
-        ...score,
-        secondPlayer: score.secondPlayer + 1
-      }))
-    }
-  }
-
   function calculateWinner(squares) {
     const lines = [
       [0, 1, 2],
@@ -96,6 +99,7 @@ const App = () => {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        // setWinLine(lines[i]);
         return squares[a];
       }
     }
@@ -121,6 +125,7 @@ const App = () => {
         secondPlayer={secondPlayer}
         enterFirstPlayer={enterFirstPlayer}
         enterSecondPlayer={enterSecondPlayer} />
+        <WinLine />
     </>
   )
 }
