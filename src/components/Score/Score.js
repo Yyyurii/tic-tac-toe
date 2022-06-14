@@ -1,11 +1,12 @@
 import './score.css';
 
-const Score = ({ enterName, firstPlayer, secondPlayer }) => {
+const Score = ({ enterName, firstPlayer, secondPlayer, score, draw }) => {
   return (
     <div className="score">
       <p>Score</p>
-      <p>{!enterName ? firstPlayer : 'Player 1'}: </p>
-      <p>{!enterName ? secondPlayer : 'Player 2'}: </p>
+      <p>{!enterName ? firstPlayer + ' - x' : 'Player 1'}: {score.firstPlayer} </p>
+      <p>{!enterName ? secondPlayer + ' - o' : 'Player 2'}: {score.secondPlayer}</p>
+      <p className={draw ? 'draw show' : 'draw'}>Draw !</p>
     </div>
   )
 };

@@ -12,22 +12,42 @@ const App = () => {
   const [firstPlayer, setFirstPlayer] = useState('');
   const [secondPlayer, setSecondPlayer] = useState('');
   const [showPopup, setShowPopup] = useState(true);
-  
+  const [score, setScore] = useState({
+    firstPlayer: 0,
+    secondPlayer: 0
+  });
 
   const winner = calculateWinner(cells);
 
   useEffect(() => {
+    function endGame() {
+      setTimeout(() => {
+        setCells(Array(9).fill(null));
+        setDraw(false);
+      }, 3000);
+
+      if (draw) {
+        return 'Draw!'
+      } else {
+        return winCounter();
+      }
+    }
+
     function isDraw() {
       const draw = cells.filter(cell => cell === null);
 
-      if (draw.length <= 0) {
+      if (draw.length <= 0 && !winner) {
         setDraw(true);
       }
     };
 
+    if (winner || draw) {
+      endGame();
+    }
+
     isDraw();
 
-  }, [cells]);
+  }, [cells, draw]);
 
   const enterFirstPlayer = (e) => setFirstPlayer(e.target.value);
   const enterSecondPlayer = (e) => setSecondPlayer(e.target.value);
@@ -47,16 +67,17 @@ const App = () => {
     setShowPopup(false)
   }
 
-  function endGame() {
-    setTimeout(() => {
-      setCells(Array(9).fill(null));
-      setDraw(false);
-    }, 5000);
-
-    if (draw) {
-      return 'Draw!'
+  const winCounter = () => {
+    if (!xTurn) {
+      setScore(score => ({
+        ...score,
+        firstPlayer: score.firstPlayer + 1
+      }))
     } else {
-      return `${xTurn ? "O's" : "X's"} Wins!`
+      setScore(score => ({
+        ...score,
+        secondPlayer: score.secondPlayer + 1
+      }))
     }
   }
 
@@ -88,10 +109,11 @@ const App = () => {
         handleClick={handleClick}
         xTurn={xTurn} />
       <Score
+        draw={draw}
+        score={score}
         firstPlayer={firstPlayer}
         secondPlayer={secondPlayer}
         enterName={showPopup} />
-      {winner || draw ? endGame() : null}
       <Popup
         isShowPopup={isShowPopup}
         showPopup={showPopup}

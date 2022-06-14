@@ -6,3 +6,11 @@
 .score p {
   margin-top: 0px;
 }
+
+.draw {
+  display: none;
+}
+
+.draw.show {
+  display: block;
+}
