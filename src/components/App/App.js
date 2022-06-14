@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from 'react';
 import Board from '../Board/Board';
 import Score from '../Score/Score';
 import Popup from '../Popup/Popup';
-import WinLine from '../WinLine/WinLine';
 
 const App = () => {
 
@@ -17,10 +16,8 @@ const App = () => {
     firstPlayer: 0,
     secondPlayer: 0
   });
-  // const [winLine, setWinLine] = useState(null);
 
   const winner = calculateWinner(cells);
-
   
   const winCounter = useCallback(() => {
     if (!xTurn) {
@@ -125,7 +122,6 @@ const App = () => {
         secondPlayer={secondPlayer}
         enterFirstPlayer={enterFirstPlayer}
         enterSecondPlayer={enterSecondPlayer} />
-        <WinLine />
     </>
   )
 }
