@@ -1,17 +1,12 @@
 import './cell.css';
 
-const Cell = () => {
+const Cell = ({handleClick, value}) => {
+  
   return (
     <>
-      <div className="cell x" data-cell></div>
-      <div className="cell circle" data-cell></div>
-      <div className="cell" data-cell></div>
-      <div className="cell" data-cell></div>
-      <div className="cell" data-cell></div>
-      <div className="cell" data-cell></div>
-      <div className="cell" data-cell></div>
-      <div className="cell" data-cell></div>
-      <div className="cell" data-cell></div>
+      <div 
+        className={value ? 'cell ' + value : 'cell'}
+        onClick={handleClick}></div>
     </>
   )
 };
